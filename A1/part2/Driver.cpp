@@ -62,6 +62,7 @@ int main()
 
   d.createTriangle();
 
+  printf("\n\nStart:\n");
   d.printTriangle();
 
   Point translation = d.inputTranslateTriangle();
@@ -69,5 +70,6 @@ int main()
   d.translateTriangle(translation.y, 'y');
   d.translateTriangle(translation.z, 'z');
 
+  printf("\nEnd:\n");
   d.printTriangle();
 }
