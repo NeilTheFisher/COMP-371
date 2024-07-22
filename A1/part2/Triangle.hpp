@@ -20,7 +20,7 @@ public:
 
   ~Triangle()
   {
-    if (vertex_1 != NULL && vertex_2 != NULL && vertex_3 != NULL)
+    if (vertex_1 && vertex_2 && vertex_3)
     {
       delete vertex_1;
       delete vertex_2;
