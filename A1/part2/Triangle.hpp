@@ -1,5 +1,5 @@
 #include <cstdio>
-
+#include <cmath>
 #include "Point.hpp"
 
 class Triangle
@@ -32,17 +32,17 @@ public:
   {
     vertex_1->translate(d, axis);
     vertex_2->translate(d, axis);
-    vertex_3->translate(d, axis);
+    return vertex_3->translate(d, axis);
   }
 
-  float calcArea()
-  {
-    float a = 0;
-    a = vertex_1->x * (vertex_2->y - vertex_3->y) +
-        vertex_2->x * (vertex_3->y - vertex_1->y) +
-        vertex_3->x * (vertex_1->y - vertex_2->y);
-    return a / 2;
-  }
+  // float calcArea()
+  // {
+  //   float a = 0;
+  //   a = vertex_1->x * (vertex_2->y - vertex_3->y) +
+  //       vertex_2->x * (vertex_3->y - vertex_1->y) +
+  //       vertex_3->x * (vertex_1->y - vertex_2->y);
+  //   return a / 2;
+  // }
 
   float calcArea()
   {
@@ -50,18 +50,18 @@ public:
     float side = 0;
     float height = 0;
 
-    base = math.abs(math.sqrt(
-               (vertex_3.x - vertex_1.x) * (vertex_3.x - vertex_1.x) +
-               (vertex_3.y - vertex_1.y) * (vertex_3.y - vertex_1.y) +
-               (vertex_3.z - vertex_1.z) * (vertex_3.z - vertex_1.z))) /
+    base = std::abs(std::sqrt(
+               (vertex_3->x - vertex_1->x) * (vertex_3->x - vertex_1->x) +
+               (vertex_3->y - vertex_1->y) * (vertex_3->y - vertex_1->y) +
+               (vertex_3->z - vertex_1->z) * (vertex_3->z - vertex_1->z))) /
            2;
 
-    side = math.abs(math.sqrt(
-        (vertex_2.x - vertex_3.x) * (vertex_2.x - vertex_3.x) +
-        (vertex_2.y - vertex_3.y) * (vertex_2.y - vertex_3.y) +
-        (vertex_2.z - vertex_3.z) * (vertex_2.z - vertex_3.z)));
+    side = std::abs(std::sqrt(
+        (vertex_2->x - vertex_3->x) * (vertex_2->x - vertex_3->x) +
+        (vertex_2->y - vertex_3->y) * (vertex_2->y - vertex_3->y) +
+        (vertex_2->z - vertex_3->z) * (vertex_2->z - vertex_3->z)));
 
-    height = math.sqrt(side * side - base * base);
+    height = std::sqrt(side * side - base * base);
     return (base * height);
   }
 

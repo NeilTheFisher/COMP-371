@@ -16,13 +16,16 @@ public:
 
   void createTriangle()
   {
-    printf("Select the x,y,z coordinates for the first point: ");
+    int num1;
+    int num2;
+    int num3;
+    printf("Select the x,y,z coordinates for the first point: eg.'x y z'");
     scanf("%d %d %d", &num1, &num2, &num3);
     Point *p1 = new Point(num1, num2, num3);
-    printf("Select the x,y,z coordinates for the second point: ");
+    printf("Select the x,y,z coordinates for the second point: eg.'x y z'");
     scanf("%d %d %d", &num1, &num2, &num3);
     Point *p2 = new Point(num1, num2, num3);
-    printf("Select the x,y,z coordinates for the third point: ");
+    printf("Select the x,y,z coordinates for the third point: eg.'x y z'");
     scanf("%d %d %d", &num1, &num2, &num3);
     Point *p3 = new Point(num1, num2, num3);
     triangle = new Triangle(p1, p2, p3);
