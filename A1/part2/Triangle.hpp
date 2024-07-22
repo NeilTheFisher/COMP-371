@@ -35,32 +35,6 @@ public:
     return vertex_3->translate(d, axis);
   }
 
-  // float calcArea()
-  // {
-  //   float a = 0;
-  //   a = vertex_1->x * (vertex_2->y - vertex_3->y) +
-  //       vertex_2->x * (vertex_3->y - vertex_1->y) +
-  //       vertex_3->x * (vertex_1->y - vertex_2->y);
-  //   return a / 2;
-  // }
-
-  // float calcArea()
-  // {
-  //   float base = std::sqrt(std::abs(
-  //                    (vertex_3->x - vertex_1->x) * (vertex_3->x - vertex_1->x) +
-  //                    (vertex_3->y - vertex_1->y) * (vertex_3->y - vertex_1->y) +
-  //                    (vertex_3->z - vertex_1->z) * (vertex_3->z - vertex_1->z))) /
-  //                2;
-
-  //   float side = std::sqrt(std::abs(
-  //       (vertex_2->x - vertex_3->x) * (vertex_2->x - vertex_3->x) +
-  //       (vertex_2->y - vertex_3->y) * (vertex_2->y - vertex_3->y) +
-  //       (vertex_2->z - vertex_3->z) * (vertex_2->z - vertex_3->z)));
-
-  //   float height = std::sqrt(side * side - base * base);
-  //   return (base * height);
-  // }
-
   float calcArea()
   {
     int x1 = vertex_1->x;

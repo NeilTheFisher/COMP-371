@@ -63,20 +63,29 @@ public:
 
 int main()
 {
-  Driver d;
+  while (true)
+  {
+    Driver d;
 
-  d.createTriangle();
+    d.createTriangle();
 
-  printf("\n\nStart:\n");
-  d.printTriangle();
+    printf("\n\nStart:\n");
+    d.printTriangle();
 
-  Point translation = d.inputTranslateTriangle();
-  d.translateTriangle(translation.x, 'x');
-  d.translateTriangle(translation.y, 'y');
-  d.translateTriangle(translation.z, 'z');
+    Point translation = d.inputTranslateTriangle();
+    d.translateTriangle(translation.x, 'x');
+    d.translateTriangle(translation.y, 'y');
+    d.translateTriangle(translation.z, 'z');
 
-  printf("\nEnd:\n");
-  d.printTriangle();
+    printf("\nEnd:\n");
+    d.printTriangle();
 
-  d.printTriangleArea();
+    d.printTriangleArea();
+
+    printf("\nPress q to quit, any other key to continue...\n");
+    char c;
+    scanf(" %c", &c);
+    if (c == 'q')
+      break;
+  }
 }
