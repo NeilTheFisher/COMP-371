@@ -2,9 +2,10 @@
 
 int main()
 {
-  int *arr = createArray(10);
-  initializeArray(arr, 10);
-  printArray(arr, 10);
+  std::cin >> arraySize;
+  int *arr = createArray(arraySize);
+  initializeArray(arr, arraySize);
+  printArray(arr, arraySize);
   deleteArray(arr);
 }
 
@@ -24,7 +25,9 @@ void initializeArray(int *array, int size)
 void printArray(int *array, int size)
 {
   for (int i = 0; i < size; i++)
+    // prints everything in the array in one line seperated by a space
     std::cout << array[i] << " ";
+  // new line /n
   std::cout << std::endl;
 }
 

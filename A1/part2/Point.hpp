@@ -28,4 +28,28 @@ public:
     }
     return -1;
   }
+
+  int translate(int d, char axis)
+  {
+    // if d is not an integer, return -2 but the first parameter is always garanteed to be an int
+    if (std::floor(d) != d)
+    {
+      return -2;
+    }
+
+    switch (axis)
+    {
+    case 'x':
+      x += d;
+      return 0;
+    case 'y':
+      y += d;
+      return 0;
+    case 'z':
+      z += d;
+      return 0;
+    default:
+      return -1;
+    }
+  }
 };
