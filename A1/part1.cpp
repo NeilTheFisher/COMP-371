@@ -1,14 +1,5 @@
 #include <iostream>
 
-int main()
-{
-  std::cin >> arraySize;
-  int *arr = createArray(arraySize);
-  initializeArray(arr, arraySize);
-  printArray(arr, arraySize);
-  deleteArray(arr);
-}
-
 int *createArray(int size)
 {
   return new int[size];
@@ -34,4 +25,14 @@ void printArray(int *array, int size)
 void deleteArray(int *array)
 {
   delete[] array;
+}
+
+int main()
+{
+  int arraySize;
+  std::cin >> arraySize;
+  int *arr = createArray(arraySize);
+  initializeArray(arr, arraySize);
+  printArray(arr, arraySize);
+  deleteArray(arr);
 }
