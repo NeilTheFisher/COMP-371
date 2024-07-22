@@ -1,3 +1,1 @@
-g++ ./Driver.cpp -o Triangle
-./Triangle
-rm Triangle
+g++ ./Driver.cpp -o Triangle && ./Triangle && rm Triangle

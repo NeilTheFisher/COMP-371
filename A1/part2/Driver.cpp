@@ -57,9 +57,7 @@ public:
 
   void printTriangleArea()
   {
-    float a = triangle->calcArea();
-    printf("%f", a);
-    printf("\n");
+    printf("Area: %f\n", triangle->calcArea());
   }
 };
 
