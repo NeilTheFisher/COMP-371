@@ -54,6 +54,13 @@ public:
   {
     triangle->print();
   }
+
+  void printTriangleArea()
+  {
+    float a = triangle->calcArea();
+    printf("%f", a);
+    printf("\n");
+  }
 };
 
 int main()
@@ -72,4 +79,6 @@ int main()
 
   printf("\nEnd:\n");
   d.printTriangle();
+
+  d.printTriangleArea();
 }
