@@ -1,0 +1,128 @@
+# Visual Studio
+.vscode/
+*.code-workspace
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Results
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+build/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# GLFW and GLEW
+# Adjust these rules based on where you have placed GLFW and GLEW in your project structure
+glfw-3.3.4.bin.WIN64/
+glew-2.1.0/
+# If you have any custom paths, add them here
+
+# Compiled Dynamic libraries
+*.dll
+!glew32.dll
+*.dylib
+*.so
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Static Libraries
+*.lib
+*.a
+
+# Compiled Object files
+*.o
+*.obj
+
+# Logs and databases
+*.log
+*.tlog
+*.pdb
+*.idb
+*.ipdb
+*.iobj
+*.lastbuildstate
+*.sdf
+*.sqlite
+
+# Other
+*.dir
+*.pdb
+*.obj
+*.opensdf
+*.tlog
+*.tmp
+*.unsuccessfulbuild
+*.log
+*.lastbuildstate
+
+# Visual Studio 2019
+.vscode/
+.vscode/*
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Visual Studio 2019
+.vscode/
+.vscode/*
+
+# Visual Studio 2019 Code Snippets
+*.vscode/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows 10
+*.rzp
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows 10
+*.rzp
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
