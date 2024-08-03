@@ -8,9 +8,10 @@
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 #include <iostream>
 
-void processInput(GLFWwindow *window, glm::mat4 &transform)
+static void processInput(GLFWwindow *window, glm::mat4 &transform)
 {
     const float TRANSLATION_DISTANCE = 0.01f;
     const float ROTATION_ANGLE = 15.0f;
@@ -24,6 +25,16 @@ void processInput(GLFWwindow *window, glm::mat4 &transform)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    transform = glm::mat4(1.0f);
+
+    // Scaling
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        scale *= SCALING_FACTOR;
+    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+        scale /= SCALING_FACTOR;
+
+    transform = glm::scale(transform, glm::vec3(scale, scale, scale));
+
     // Translation
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         position.y += TRANSLATION_DISTANCE;
@@ -34,28 +45,19 @@ void processInput(GLFWwindow *window, glm::mat4 &transform)
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         position.x += TRANSLATION_DISTANCE;
 
+    transform = glm::translate(transform, position);
+
     // Rotation
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         rotation += ROTATION_ANGLE;
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         rotation -= ROTATION_ANGLE;
 
-    // Scaling
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        scale *= SCALING_FACTOR;
-    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-        scale /= SCALING_FACTOR;
-
-    transform = glm::mat4(1.0f);
-    transform = glm::translate(transform, position);
     transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-    transform = glm::scale(transform, glm::vec3(scale, scale, scale));
 }
 
-// Resize window callback
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-    // Match viewport to new window dimensions
     glViewport(0, 0, width, height);
 }
 
@@ -78,7 +80,6 @@ const char *fragmentShaderSource = R"glsl(
 
 int main()
 {
-
     int WIN_WIDTH = 800;
     int WIN_HEIGHT = 600;
 
@@ -89,8 +90,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // Initialize GLEW
-    glewExperimental = GL_TRUE; // Ensure GLEW uses modern techniques for managing OpenGL functionality
+    // Init GLEW
     if (glewInit() != GLEW_OK)
     {
         std::cerr << "Failed to initialize GLEW" << std::endl;
@@ -119,9 +119,9 @@ int main()
 
     // Triangle Vertex Data
     float triangle[] = {
-        -0.5f, -0.5f, 0.0f, // Bottom-Left
-        0.5f, -0.5f, 0.0f,  // Bottom-Right
-        0.0f, 0.5f, 0.0f,   // Top-Center
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f,
     };
 
     // Setup VAO, VBO, EBO
@@ -147,7 +147,6 @@ int main()
 
     glm::mat4 transform = glm::mat4(1.0f);
 
-    // Render loop
     while (!glfwWindowShouldClose(window))
     {
         processInput(window, transform);
