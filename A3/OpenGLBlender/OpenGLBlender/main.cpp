@@ -31,7 +31,8 @@ static Model loadObj(const std::string& path) {
     std::string err;
 
     if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path.c_str(), ".", true)) {
-        throw std::runtime_error(err);
+        std::cerr << "Failed to load OBJ file: " << err << std::endl;
+        exit(1);
     }
 
     Model model;
@@ -138,7 +139,7 @@ const char* fragmentShaderSource = R"(
 out vec4 FragColor;
 
 void main() {
-    FragColor = vec4(1.0, 1.0, 1.0, 1.0); // White color for the wireframe
+    FragColor = vec4(0.2, 0.5, 1.0, 1.0);
 }
 )";
 
@@ -168,7 +169,7 @@ static GLuint createShaderProgram(const char* vertexSource, const char* fragment
 }
 
 
-const char* modelPath = R"(D:\1 Important files\Neil Stuff\1 School\Concordia\s6\COMP 371\COMP-371\A3\OpenGLBlender\OpenGLBlender\model.obj)";
+const char* modelPath = R"(D:\1 Important files\Neil Stuff\1 School\Concordia\s6\COMP 371\COMP-371\A3\OpenGLBlender\OpenGLBlender\WaterBottle.obj)";
 
 const float windowWidth = 800;
 const float windowHeight = 600;
@@ -235,7 +236,7 @@ int main() {
 
     glm::mat4 modelMatrix = glm::mat4(1.0f);
 
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(90.0f), windowWidth / windowHeight, 0.0001f, 1000.0f);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.0001f, 1000.0f);
 
     glm::mat4 cameraMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
 
