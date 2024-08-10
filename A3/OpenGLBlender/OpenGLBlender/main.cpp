@@ -11,11 +11,9 @@
 #include <gtc/type_ptr.hpp>
 #include <iostream>
 #include <vector>
-#include <filesystem>
 #include <string>
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
-#include <windows.h>
 
 struct Model {
     std::vector<glm::vec3> vertices;
