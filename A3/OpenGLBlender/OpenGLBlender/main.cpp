@@ -16,105 +16,98 @@
 #include "tiny_obj_loader.h"
 
 struct Model {
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec2> texcoords;
-    std::vector<unsigned int> indices;
+	std::vector<glm::vec3> vertices;
+	std::vector<unsigned int> indices;
 };
 
 static Model loadObj(const std::string& path) {
-    tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
-    std::string err;
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string err;
 
-    if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path.c_str(), ".", true)) {
-        std::cerr << "Failed to load OBJ file: " << err << std::endl;
-        exit(1);
-    }
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path.c_str(), ".", true)) {
+		std::cerr << "Failed to load OBJ file: " << err << std::endl;
+		exit(1);
+	}
 
-    Model model;
+	Model model;
 
-    for (const auto& shape : shapes) {
-        for (const auto& index : shape.mesh.indices) {
-            glm::vec3 vertex(
-                attrib.vertices[3 * index.vertex_index + 0],
-                attrib.vertices[3 * index.vertex_index + 1],
-                attrib.vertices[3 * index.vertex_index + 2]
-            );
-            model.vertices.push_back(vertex);
+	for (const auto& shape : shapes) {
+		for (const auto& index : shape.mesh.indices) {
+			glm::vec3 vertex(
+				attrib.vertices[3 * index.vertex_index + 0],
+				attrib.vertices[3 * index.vertex_index + 1],
+				attrib.vertices[3 * index.vertex_index + 2]
+			);
+			model.vertices.push_back(vertex);
 
-            if (!attrib.normals.empty()) {
-                glm::vec3 normal(
-                    attrib.normals[3 * index.normal_index + 0],
-                    attrib.normals[3 * index.normal_index + 1],
-                    attrib.normals[3 * index.normal_index + 2]
-                );
-                model.normals.push_back(normal);
-            }
+			model.indices.push_back(model.indices.size());
+		}
+	}
 
-            if (!attrib.texcoords.empty()) {
-                glm::vec2 texcoord(
-                    attrib.texcoords[2 * index.texcoord_index + 0],
-                    attrib.texcoords[2 * index.texcoord_index + 1]
-                );
-                model.texcoords.push_back(texcoord);
-            }
-
-            model.indices.push_back(model.indices.size());
-        }
-    }
-
-    return model;
+	return model;
 }
 
 static void processInput(GLFWwindow* window, glm::mat4& transform)
 {
-    const float TRANSLATION_DISTANCE = 0.01f;
-    const float ROTATION_ANGLE = 2.0f;
-    const float SCALING_FACTOR = 1.1f;
+	const float TRANSLATION_DISTANCE = 0.01f;
+	const float ROTATION_ANGLE = 2.0f;
+	const float SCALING_FACTOR = 1.1f;
 
-    static glm::vec3 position(0.0f);
-    static float rotation = 0.0f;
-    static float scale = 1.0f;
+	static glm::vec3 position(0.0f);
+	static float rotationX = 0.0f;
+	static float rotationY = 0.0f;
+	static float rotationZ = 0.0f;
+	static float scale = 1.0f;
 
-    // Close window
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+	// Close window
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 
-    transform = glm::mat4(1.0f);
+	transform = glm::mat4(1.0f);
 
-    // Scaling
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        scale *= SCALING_FACTOR;
-    if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
-        scale /= SCALING_FACTOR;
+	// Scaling
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+		scale *= SCALING_FACTOR;
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
+		scale /= SCALING_FACTOR;
 
-    transform = glm::scale(transform, glm::vec3(scale, scale, scale));
+	transform = glm::scale(transform, glm::vec3(scale, scale, scale));
 
-    // Translation
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        position.y += TRANSLATION_DISTANCE;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        position.y -= TRANSLATION_DISTANCE;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        position.x -= TRANSLATION_DISTANCE;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        position.x += TRANSLATION_DISTANCE;
+	// Translation
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		position.y += TRANSLATION_DISTANCE;
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		position.y -= TRANSLATION_DISTANCE;
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		position.x -= TRANSLATION_DISTANCE;
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		position.x += TRANSLATION_DISTANCE;
 
-    transform = glm::translate(transform, position);
+	transform = glm::translate(transform, position);
 
-    // Rotation
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-        rotation += ROTATION_ANGLE;
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-        rotation -= ROTATION_ANGLE;
+	// Rotation
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		rotationY += ROTATION_ANGLE;
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		rotationY -= ROTATION_ANGLE;
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		rotationX += ROTATION_ANGLE;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		rotationX -= ROTATION_ANGLE;
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		rotationZ += ROTATION_ANGLE;
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		rotationZ -= ROTATION_ANGLE;
 
-    transform = glm::rotate(transform, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(rotationX), glm::vec3(1.0f, 0.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(rotationY), glm::vec3(0.0f, 1.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(rotationZ), glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 }
 
 const char* vertexShaderSource = R"(
@@ -142,28 +135,28 @@ void main() {
 )";
 
 static GLuint compileShader(GLenum shaderType, const char* source) {
-    GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(shader);
+	GLuint shader = glCreateShader(shaderType);
+	glShaderSource(shader, 1, &source, nullptr);
+	glCompileShader(shader);
 
-    return shader;
+	return shader;
 }
 
 static GLuint createShaderProgram(const char* vertexSource, const char* fragmentSource) {
-    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+	GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
+	GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
-    // Link shaders
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+	// Link shaders
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
 
-    // Delete the shaders since they're now linked into
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+	// Delete the shaders since they're now linked into
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
-    return shaderProgram;
+	return shaderProgram;
 }
 
 
@@ -173,100 +166,96 @@ const float windowWidth = 800;
 const float windowHeight = 600;
 
 int main() {
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
-        return -1;
-    }
+	if (!glfwInit()) {
+		std::cerr << "Failed to initialize GLFW" << std::endl;
+		return -1;
+	}
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Blender Model", nullptr, nullptr);
-    if (!window) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	GLFWwindow* window = glfwCreateWindow(800, 600, "Blender Model", nullptr, nullptr);
+	if (!window) {
+		std::cerr << "Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // Initialize GLEW
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) {
-        std::cerr << "Failed to initialize GLEW" << std::endl;
-        return -1;
-    }
+	// Initialize GLEW
+	if (glewInit() != GLEW_OK) {
+		std::cerr << "Failed to initialize GLEW" << std::endl;
+		return -1;
+	}
 
-    // Set the viewport size
-    glViewport(0, 0, windowWidth, windowHeight);
+	glViewport(0, 0, windowWidth, windowHeight);
 
-    // Enable depth test
-    glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
-    // Enable wireframe mode
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// Enable wireframe mode
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    // Load the model
-    Model model = loadObj(modelPath);
-    
-    // Compile and link shaders into a program
-    GLuint shaderProgram = createShaderProgram(vertexShaderSource, fragmentShaderSource);
-    
-    GLuint VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+	// Load the model
+	Model model = loadObj(modelPath);
 
-    // Bind vertex array
-    glBindVertexArray(VAO);
+	GLuint shaderProgram = createShaderProgram(vertexShaderSource, fragmentShaderSource);
 
-    // Bind vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, model.vertices.size() * sizeof(glm::vec3), &model.vertices[0], GL_STATIC_DRAW);
+	GLuint VAO, VBO, EBO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 
-    // Bind element buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(unsigned int), &model.indices[0], GL_STATIC_DRAW);
+	glBindVertexArray(VAO);
 
-    // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
-    glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, model.vertices.size() * sizeof(glm::vec3), &model.vertices[0], GL_STATIC_DRAW);
 
-    // Unbind vertex array
-    glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(unsigned int), &model.indices[0], GL_STATIC_DRAW);
 
-    glm::mat4 modelMatrix = glm::mat4(1.0f);
+	// aPos attribute in the shader (location = 0)
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+	glEnableVertexAttribArray(0);
 
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.0001f, 1000.0f);
+	// Unbind vertex array
+	glBindVertexArray(0);
 
-    glm::mat4 cameraMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	float* modelMatrixPtr = glm::value_ptr(modelMatrix);
 
-    while (!glfwWindowShouldClose(window)) {
-        // process input, the model is the only thing that is moved in the scene
-        processInput(window, modelMatrix);
+	glm::mat4 projectionMatrix = glm::perspective(glm::radians(45.0f), windowWidth / windowHeight, 0.0001f, 1000.0f);
+	float* projectionMatrixPtr = glm::value_ptr(projectionMatrix);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glm::mat4 cameraMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
+	float* cameraMatrixPtr = glm::value_ptr(cameraMatrix);
 
-        glUseProgram(shaderProgram);
+	while (!glfwWindowShouldClose(window)) {
+		// process input, the model is the only thing that is moved in the scene
+		processInput(window, modelMatrix);
 
-        // Set the transformation uniforms of the shader
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(cameraMatrix));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // Render the model
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, model.indices.size(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+		glUseProgram(shaderProgram);
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+		// Set the transformation uniforms of the shader
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, modelMatrixPtr);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, projectionMatrixPtr);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, cameraMatrixPtr);
 
-    // Deallocate resources
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
+		// Render the model
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, model.indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
-    // Terminate GLFW
-    glfwTerminate();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
 
-    return 0;
+	// Deallocate resources
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+
+	// Terminate GLFW
+	glfwTerminate();
+
+	return 0;
 }
